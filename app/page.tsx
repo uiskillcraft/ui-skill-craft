@@ -10,7 +10,7 @@ export default async function Home() {
   const clients = await response.json();
   return (
     <main>
-      {clients.map((client: any) => <h1>{client.email}</h1>)}
+      {clients.map((client: any) => <h1 key={client.id}>{client.email}</h1>)}
     </main>
   );
 }
