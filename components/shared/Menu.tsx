@@ -4,7 +4,7 @@ import * as React from "react";
 import Link from "next/link";
 
 import { cn } from "@/lib/utils";
-import { Github } from 'lucide-react';
+import { Github } from "lucide-react";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -14,7 +14,8 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
-import { Button } from "../ui/button";
+import { Button } from "@/components//ui/button";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 
 const components: { title: string; href: string; description: string }[] = [
   {
@@ -55,13 +56,44 @@ const components: { title: string; href: string; description: string }[] = [
 ];
 
 export default function NavigationMenuDemo() {
+  const [user, setUser] = React.useState<any>(null);
+  const supabase = createClientComponentClient();
+
+  const loginGithub = async () => {
+    let { data, error } = await supabase.auth.signInWithOAuth({
+      provider: 'github',
+      options: {
+        redirectTo: `${location.origin}/api/auth/callback`
+      }
+    })
+    if(error){
+      throw new Error(error.message)
+    }
+
+    console.log(data)
+    setUser("user");
+  };
+
+  const logout = async () => {
+    await supabase.auth.signOut();
+
+    setUser(null);
+  };
+
   return (
     <NavigationMenu>
       <span>LOGO</span>
       <div className="flex justify-between w-full">
         <NavigationMenuList>
           <NavigationMenuItem>
-            <NavigationMenuTrigger>Getting started</NavigationMenuTrigger>
+            <Link href="/" legacyBehavior passHref>
+              <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                Home
+              </NavigationMenuLink>
+            </Link>
+          </NavigationMenuItem>
+          <NavigationMenuItem>
+            <NavigationMenuTrigger>What we offer</NavigationMenuTrigger>
             <NavigationMenuContent>
               <ul className="grid gap-3 p-4 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
                 <li className="row-span-3">
@@ -116,9 +148,13 @@ export default function NavigationMenuDemo() {
             </Link>
           </NavigationMenuItem>
         </NavigationMenuList>
-        <Button>
-          <Github className="mr-2 h-4 w-4" /> Login with Github
-        </Button>
+        {user ? (
+          <Button onClick={logout}>Logout</Button>
+        ) : (
+          <Button onClick={loginGithub}>
+            <Github className="mr-2 h-4 w-4" /> Login with Github
+          </Button>
+        )}
       </div>
     </NavigationMenu>
   );

@@ -1,13 +1,15 @@
-import Challenges from "@/components/shared/Challenges";
-import Menu from "@/components/shared/Menu";
+// import Challenges from "@/components/shared/Challenges";
+// import Menu from "@/components/shared/Menu";
+import { Button } from "@/components/ui/button";
 
 export default function Home() {
   return (
     <main>
-      <Menu />
-      <div className="container mt-4">
+      {/* <Menu /> */}
+      <Button>Click</Button>
+      {/* <div className="container mt-4">
         <Challenges />
-      </div>
+      </div> */}
     </main>
   );
 }
