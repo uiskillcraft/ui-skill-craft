@@ -2,8 +2,7 @@ import supabase from "@/lib/supabase/supabase"
 import { NextResponse } from "next/server"
 
 export async function GET(request: Request){
-    const { data: clients } = await supabase.from('clients').select()
-    console.log(clients)
+    const { data: challenges } = await supabase.from('challenges').select()
 
-    return NextResponse.json(clients)
+    return NextResponse.json(challenges)
 }

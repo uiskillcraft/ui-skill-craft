@@ -1,16 +1,13 @@
-import { headers } from 'next/headers';
+import Challenges from "@/components/shared/Challenges";
+import Menu from "@/components/shared/Menu";
 
-export default async function Home() {
-  const headersList = headers();
-  const host = headersList.get('host');
-
-  const response = await fetch(`http://${host}/api/clients`, {
-    cache: "no-cache",
-  });
-  const clients = await response.json();
+export default function Home() {
   return (
     <main>
-      {clients.map((client: any) => <h1 key={client.id}>{client.email}</h1>)}
+      <Menu />
+      <div className="container mt-4">
+        <Challenges />
+      </div>
     </main>
   );
 }
