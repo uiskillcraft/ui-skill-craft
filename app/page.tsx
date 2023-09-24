@@ -1,6 +1,10 @@
 import Hero from "@/components/shared/Hero";
+import HeroGradients from "@/components/ui/HeroGradients";
 import { Card, CardBody, CardHeader } from "@nextui-org/card";
+import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+import { cookies } from "next/headers";
 import Image from "next/image";
+import { redirect } from "next/navigation";
 
 const steps = [
   {
@@ -25,9 +29,20 @@ const steps = [
   },
 ];
 
-export default function Home() {
+export default async function LandingPage() {
+  const supabase = createServerComponentClient({
+    cookies,
+  });
+
+  const { data } = await supabase.auth.getSession();
+
+  if (data.session) {
+    redirect("/home")
+  }
+
   return (
     <main style={{ minHeight: "300vh" }}>
+      <HeroGradients />
       <Hero />
       <div className="container gap-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 mx-auto px-4 md:px-0">
         {steps.map((step) => (

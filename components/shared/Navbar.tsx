@@ -17,10 +17,13 @@ import {
 import { AcmeLogo } from "../ui/AcmeLogo";
 import { useScroll } from "@/providers/scroll-context";
 import { SearchIcon } from "lucide-react";
+import { useSupabase } from "@/providers/supabase-context";
+import UserDropdown from "./UserDropdown";
 
 export default function Menubar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { handleScrollPositionChange, scrolled } = useScroll();
+  const { session } = useSupabase();
 
   const menuItems = [
     "Profile",
@@ -100,9 +103,18 @@ export default function Menubar() {
           type="search"
         />
         <NavbarItem>
-          <Button as={Link} href="#" variant="ghost">
-            Get started
-          </Button>
+          {session?.user ? (
+            <UserDropdown
+              user={{
+                user_name: session?.user?.user_metadata?.user_name,
+                avatar_url: session?.user?.user_metadata?.avatar_url,
+              }}
+            />
+          ) : (
+            <Button as={Link} href="#" variant="ghost">
+              Get started
+            </Button>
+          )}
         </NavbarItem>
       </NavbarContent>
 

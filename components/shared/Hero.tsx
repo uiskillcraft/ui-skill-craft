@@ -1,7 +1,6 @@
-import { Button } from "@nextui-org/button";
-import { Github } from "lucide-react";
+import GithubButton from "../client/GithubButton";
 
-export default function Hero() {
+export default async function Hero() {
   return (
     <div className="min-h-[60vh] sm:min-h-[80vh] flex items-center flex-col justify-start sm:justify-center px-4 gap-6 mt-24 sm:mt-0">
       <div className="flex flex-col items-center justify-center relative">
@@ -18,15 +17,7 @@ export default function Hero() {
         aliquid earum! Officiis debitis tempora culpa autem velit sed quia
         inventore!
       </p>
-      <Button
-        size="lg"
-        variant="bordered"
-        color="secondary"
-        disableRipple
-        startContent={<Github />}
-      >
-        Login with Github
-      </Button>
+      <GithubButton />
     </div>
   );
 }

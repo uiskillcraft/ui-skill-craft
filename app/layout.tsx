@@ -3,7 +3,6 @@ import type { Metadata } from "next";
 import Menubar from "@/components/shared/Navbar";
 import SupabaseProvider from "@/providers/supabase-context";
 import ScrollProvider from "@/providers/scroll-context";
-import HeroGradients from "@/components/ui/HeroGradients";
 import localFont from "next/font/local";
 import { Providers } from "./providers";
 
@@ -67,7 +66,6 @@ export default function RootLayout({
           <ScrollProvider>
             <SupabaseProvider>
               <Menubar />
-              <HeroGradients />
               <>{children}</>
             </SupabaseProvider>
           </ScrollProvider>

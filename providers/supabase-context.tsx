@@ -1,58 +1,64 @@
-'use client'
+"use client";
 
-import type { SupabaseClient } from "@supabase/auth-helpers-nextjs";
-import { createPagesBrowserClient } from "@supabase/auth-helpers-nextjs";
+import { createContext, useContext, useEffect, useState } from "react";
+import { createPagesBrowserClient  } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/navigation";
-import {
-  ReactNode,
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+
+import type { Session, SupabaseClient } from "@supabase/auth-helpers-nextjs";
 
 type SupabaseContext = {
-  supabase: SupabaseClient;
+	supabase: SupabaseClient;
+	session: Session | null
 };
 
 const Context = createContext<SupabaseContext | undefined>(undefined);
 
 export default function SupabaseProvider({
-  children,
+	children,
 }: {
-  children: ReactNode;
+	children: React.ReactNode;
 }) {
-  const router = useRouter();
-  const [supabase] = useState(() => createPagesBrowserClient());
+	const [supabase] = useState(() => createPagesBrowserClient ());
+	const [session, setSession] = useState<Session|null>(null)
+	const router = useRouter();
 
-  useEffect(() => {
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange(() => {
-        // const { data, error } = await supabase.auth.getSession()
+	const getConnectedUser = async() => {
+		const { data } = await supabase.auth.getSession();
 
+		if(data?.session){
+			setSession(data.session)
+		} else {
+			setSession(null)
+		}
+	}
 
-      router.refresh();
-    });
+	useEffect(() => {
+		const {
+			data: { subscription },
+		} = supabase.auth.onAuthStateChange(() => {
+			getConnectedUser();
+			router.refresh()
+		});
+		
+		
+		return () => {
+			subscription.unsubscribe();
+		};
+	}, [router, supabase]);
 
-    return () => {
-      subscription.unsubscribe();
-    };
-  }, [supabase, router]);
-
-  return (
-    <Context.Provider value={{ supabase }}>
-      <>{children}</>
-    </Context.Provider>
-  );
+	return (
+		<Context.Provider value={{ supabase, session }}>
+			<>{children}</>
+		</Context.Provider>
+	);
 }
 
 export const useSupabase = () => {
-  const context = useContext(Context);
+	const context = useContext(Context);
 
-  if (context === undefined) {
-    throw new Error("useSupabase must be used inside SupabaseProvider");
-  }
+	if (context === undefined) {
+		throw new Error("useSupabase must be used inside SupabaseProvider");
+	}
 
-  return context;
+	return context;
 };
