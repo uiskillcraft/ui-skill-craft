@@ -41,7 +41,7 @@ export default function Menubar() {
       onMenuOpenChange={setIsMenuOpen}
       isBlurred={scrolled > 200 || isMenuOpen}
       isBordered={scrolled > 200}
-      className={scrolled > 200 ? "unset" : "bg-transparent"}
+      className={scrolled > 200 ? "bg-default-100/40" : "bg-transparent"}
       maxWidth="2xl"
       onScrollPositionChange={handleScrollPositionChange}
     >
