@@ -10,6 +10,11 @@ import { Providers } from "./providers";
 const mona = localFont({
   src: [
     {
+      path: "../fonts/mona-sans/MonaSans-Black.woff2",
+      weight: "900",
+      style: "normal",
+    },
+    {
       path: "../fonts/mona-sans/MonaSans-Bold.woff2",
       weight: "700",
       style: "normal",
