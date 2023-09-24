@@ -6,6 +6,8 @@ import ScrollProvider from "@/providers/scroll-context";
 import localFont from "next/font/local";
 import { Providers } from "./providers";
 
+export const revalidate = 0;
+
 const mona = localFont({
   src: [
     {

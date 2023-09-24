@@ -15,8 +15,8 @@ interface User {
 
 export default function UserDropdown({ user }: { user: User }) {
   const { supabase } = useSupabase();
-  const logout = async () => {
-    await supabase.auth.signOut();
+  const logout = () => {
+    supabase.auth.signOut();
   };
 
   return (
