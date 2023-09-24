@@ -1,11 +1,15 @@
-import Challenges from "@/components/shared/Challenges";
+import Hero from "@/components/shared/Hero";
 
 export default function Home() {
   return (
-    <main>
-      <div className="container mt-4">
-        <Challenges />
-      </div>
+    <main style={{ minHeight: "300vh" }}>
+      <Hero />
+      <p>
+        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptatibus
+        dignissimos dolorem veritatis eveniet suscipit tempore praesentium
+        facere, nesciunt quas cupiditate distinctio dicta eum repellendus, hic
+        in incidunt! Itaque, saepe sapiente.
+      </p>
     </main>
   );
 }
